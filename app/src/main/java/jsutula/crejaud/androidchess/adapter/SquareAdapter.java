@@ -10,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.model.Square;
 
 public class SquareAdapter extends BaseAdapter {

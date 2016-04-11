@@ -26,6 +26,9 @@ public class King extends LongMovementPiece {
 
     @Override
     public int getDrawable() {
-        return 0;
+        if (isWhite())
+            return R.drawable.ic_white_king;
+        else
+            return R.drawable.ic_black_king;
     }
 }

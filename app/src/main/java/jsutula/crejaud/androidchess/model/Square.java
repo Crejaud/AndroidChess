@@ -2,6 +2,7 @@ package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,6 +33,14 @@ public class Square extends ImageView {
         setBackgroundColor(getResources().getColor(colorID));
     }
 
+    public Square(Context c, AttributeSet attrs) {
+        super(c, attrs);
+    }
+
+    public Square(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
     /**
      * Sets the piece occupying the square with the parameter
      * @param piece - the new piece occupying the square
@@ -42,8 +51,8 @@ public class Square extends ImageView {
         if (occupyingPiece == null)
             setImageDrawable(null);
         else {
-            //System.out.println("DRAWABLE: " + occupyingPiece.getDrawable());
             setImageResource(occupyingPiece.getDrawable());
+            setScaleType(ScaleType.CENTER_INSIDE);
         }
     }
 
@@ -69,11 +78,6 @@ public class Square extends ImageView {
      */
     public boolean isSquareWhite() {
         return isWhite;
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        //Toast.makeText(getContext(), "drawn", Toast.LENGTH_SHORT).show();
     }
 
     @Override

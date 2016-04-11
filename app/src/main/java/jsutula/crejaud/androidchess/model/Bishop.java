@@ -26,6 +26,9 @@ public class Bishop extends LongMovementPiece {
 
     @Override
     public int getDrawable() {
-        return 0;
+        if (isWhite())
+            return R.drawable.ic_white_bishop;
+        else
+            return R.drawable.ic_black_bishop;
     }
 }
