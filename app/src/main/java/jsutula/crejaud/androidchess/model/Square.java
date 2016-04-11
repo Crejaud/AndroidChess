@@ -1,21 +1,26 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.Context;
+import android.view.View;
+import android.widget.ImageView;
+
 /**
  * Square class represents a spot on the board, which has a color and an occupying piece
  *
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class Square {
+public class Square extends ImageView {
 
     private Piece occupyingPiece;
     private boolean isWhite;
 
-    public Square(boolean isWhite) {
-        this(null, isWhite);
+    public Square(Context context, boolean isWhite) {
+        this(context, null, isWhite);
     }
 
-    public Square(Piece piece, boolean isWhite) {
+    public Square(Context context, Piece piece, boolean isWhite) {
+        super(context);
         this.occupyingPiece = piece;
         this.isWhite = !isWhite;
     }
