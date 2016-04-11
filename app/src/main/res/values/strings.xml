@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Android Chess</string>
+
+    <string name="play_chess_btn">Play Chess</string>
+    <string name="recorded_games_btn">View Recorded Games</string>
+    <string name="playback_game_btn">Playback</string>
+
 </resources>
