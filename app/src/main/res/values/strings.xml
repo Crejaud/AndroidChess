@@ -5,4 +5,9 @@
     <string name="recorded_games_btn">View Recorded Games</string>
     <string name="playback_game_btn">Playback</string>
 
+    <string name="undo_btn">Undo</string>
+    <string name="draw_btn">Draw</string>
+    <string name="resign_btn">Resign</string>
+    <string name="ai_btn">AI</string>
+
 </resources>

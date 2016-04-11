@@ -1,8 +1,10 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 /**
  * Square class represents a spot on the board, which has a color and an occupying piece
@@ -55,5 +57,10 @@ public class Square extends ImageView {
      */
     public boolean isSquareWhite() {
         return isWhite;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        Toast.makeText(getContext(), "yo", Toast.LENGTH_SHORT);
     }
 }

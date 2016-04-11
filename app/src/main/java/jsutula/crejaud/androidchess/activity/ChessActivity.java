@@ -4,10 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.GridView;
 
 import jsutula.crejaud.androidchess.R;
+import jsutula.crejaud.androidchess.model.BoardGridView;
 
 public class ChessActivity extends AppCompatActivity {
+
+    GridView chessboardGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +23,13 @@ public class ChessActivity extends AppCompatActivity {
         //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         setContentView(R.layout.activity_chess);
+
+        chessboardGrid = (GridView) findViewById(R.id.chessboardGrid);
+
+        BoardGridView newGame = new BoardGridView();
+
+
+
     }
 }
