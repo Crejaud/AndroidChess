@@ -4,14 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.GridView;
 
 import jsutula.crejaud.androidchess.R;
+import jsutula.crejaud.androidchess.adapter.SquareAdapter;
 import jsutula.crejaud.androidchess.model.BoardGridView;
+import jsutula.crejaud.androidchess.model.Square;
 
 public class ChessActivity extends AppCompatActivity {
 
-    GridView chessboardGrid;
+    BoardGridView chessboardGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +26,11 @@ public class ChessActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_chess);
 
-        chessboardGrid = (GridView) findViewById(R.id.chessboardGrid);
+        chessboardGrid = (BoardGridView) findViewById(R.id.chessboardGrid);
 
-        BoardGridView newGame = new BoardGridView();
+        SquareAdapter adapter = new SquareAdapter(this, chessboardGrid.getBoard());
 
-
+        chessboardGrid.setAdapter(adapter);
 
     }
 }

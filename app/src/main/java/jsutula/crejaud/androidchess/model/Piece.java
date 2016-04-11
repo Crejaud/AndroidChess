@@ -44,4 +44,6 @@ public abstract class Piece {
     public abstract boolean isValidMove(Square[][] board);
 
     public abstract Square[][] move(Square[][] board);
+
+    public abstract int getDrawable();
 }

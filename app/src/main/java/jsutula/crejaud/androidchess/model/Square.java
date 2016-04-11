@@ -2,9 +2,10 @@ package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import jsutula.crejaud.androidchess.R;
 
 /**
  * Square class represents a spot on the board, which has a color and an occupying piece
@@ -25,6 +26,13 @@ public class Square extends ImageView {
         super(context);
         this.occupyingPiece = piece;
         this.isWhite = !isWhite;
+
+        int colorID = isWhite ? R.color.whiteSquare : R.color.blackSquare;
+        setBackgroundColor(getResources().getColor(colorID));
+
+        if (occupyingPiece != null) {
+            setImageResource(occupyingPiece.getDrawable());
+        }
     }
 
     /**

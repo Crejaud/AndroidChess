@@ -25,4 +25,9 @@ public class Pawn extends Piece {
     public Square[][] move(Square[][] board) {
         return new Square[0][];
     }
+
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
 }

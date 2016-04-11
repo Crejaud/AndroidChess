@@ -21,4 +21,9 @@ public class Rook extends LongMovementPiece {
     public Square[][] move(Square[][] board) {
         return new Square[0][];
     }
+
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
 }

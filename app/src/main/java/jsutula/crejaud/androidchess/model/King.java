@@ -22,5 +22,8 @@ public class King extends LongMovementPiece {
         return new Square[0][];
     }
 
-
+    @Override
+    public int getDrawable() {
+        return 0;
+    }
 }

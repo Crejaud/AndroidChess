@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
 
 import jsutula.crejaud.androidchess.model.Square;
 
@@ -49,7 +47,9 @@ public class SquareAdapter extends BaseAdapter {
     }
 
     @Override
-    public ImageView getView(int position, View view, ViewGroup parent) {
+    public Square getView(int position, View view, ViewGroup parent) {
+
+
         filePosition = position % 8;
         rankPosition = (position - filePosition)/8;
 

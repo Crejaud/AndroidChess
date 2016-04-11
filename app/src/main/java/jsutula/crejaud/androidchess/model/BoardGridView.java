@@ -93,4 +93,8 @@ public class BoardGridView extends GridView {
         isDrawAvailable = false;
     }
 
+    public Square[][] getBoard() {
+        return board;
+    }
+
 }
