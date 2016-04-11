@@ -1,8 +1,6 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
-import android.widget.GridLayout;
-import android.widget.GridView;
 
 /**
  * Board class, which holds the board in a game of chess.

@@ -1,5 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
+import jsutula.crejaud.androidchess.R;
+
 /**
  * Bishop class, which extends the LongMovementPiece abstract class
  *

@@ -1,5 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
+import jsutula.crejaud.androidchess.R;
+
 /**
  * Knight class, which extends the Piece abstract class
  *
