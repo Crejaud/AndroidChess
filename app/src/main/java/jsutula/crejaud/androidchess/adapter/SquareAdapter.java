@@ -1,9 +1,14 @@
 package jsutula.crejaud.androidchess.adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import jsutula.crejaud.androidchess.model.Square;
 
@@ -11,7 +16,7 @@ public class SquareAdapter extends BaseAdapter {
 
     private Context context;
     private Square[][] board;
-    private int rankPosition, filePosition;
+    //private int rank, file;
 
     public SquareAdapter(Context context, Square[][] board) {
         this.context = context;
@@ -20,7 +25,9 @@ public class SquareAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        int file = position % 8;
+        int rank = Math.abs((position - file)/8 - 7);
+        return getItem(file, rank);
     }
 
     @Override
@@ -43,16 +50,22 @@ public class SquareAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
-    public Square getView(int position, View view, ViewGroup parent) {
+    public Square getView(final int position, View view, ViewGroup parent) {
+        final int file = position % 8;
+        final int rank = Math.abs((position - file)/8 - 7);
 
+        board[file][rank].setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Toast.makeText(context, "File: " + file + "; Rank: " + rank, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
-        filePosition = position % 8;
-        rankPosition = (position - filePosition)/8;
-
-        return board[filePosition][rankPosition];
+        return board[file][rank];
     }
 }

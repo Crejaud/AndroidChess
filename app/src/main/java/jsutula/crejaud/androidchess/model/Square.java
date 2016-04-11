@@ -2,6 +2,8 @@ package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -18,12 +20,12 @@ public class Square extends ImageView {
     private Piece occupyingPiece;
     private boolean isWhite;
 
-    public Square(Context context, boolean isWhite) {
-        this(context, null, isWhite);
+    public Square(Context c, boolean isWhite) {
+        this(c, null, isWhite);
     }
 
-    public Square(Context context, Piece piece, boolean isWhite) {
-        super(context);
+    public Square(Context c, Piece piece, boolean isWhite) {
+        super(c);
         this.occupyingPiece = piece;
         this.isWhite = !isWhite;
 
@@ -69,6 +71,28 @@ public class Square extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Toast.makeText(getContext(), "yo", Toast.LENGTH_SHORT);
+        //Toast.makeText(getContext(), "drawn", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (occupyingPiece != null)
+            Toast.makeText(getContext(), "This is: " + occupyingPiece + ", color: " + occupyingPiece.isWhite(), Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getContext(), "This is: empty", Toast.LENGTH_SHORT).show();
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
+    {
+        final int width = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
+        setMeasuredDimension(width, width);
+    }
+
+    @Override
+    protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh)
+    {
+        super.onSizeChanged(w, w, oldw, oldh);
     }
 }

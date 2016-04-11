@@ -12,15 +12,14 @@
     tools:context="jsutula.crejaud.androidchess.activity.ChessActivity">
 
 
-    <jsutula.crejaud.androidchess.model.BoardGridView
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chessboardGrid"
         android:numColumns="8"
         android:layout_weight="18">
 
-
-    </jsutula.crejaud.androidchess.model.BoardGridView>
+    </GridView>
 
     <LinearLayout
         android:layout_width="match_parent"

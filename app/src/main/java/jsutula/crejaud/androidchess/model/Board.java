@@ -12,7 +12,7 @@ import android.widget.GridView;
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class BoardGridView extends GridView {
+public class Board {
 
     static final boolean WHITE = true;
     static final boolean BLACK = false;
@@ -28,19 +28,18 @@ public class BoardGridView extends GridView {
         isInCheck,
         isDrawAvailable;
 
-    public BoardGridView(Context context) {
-        super(context);
+    public Board(Context context) {
         board = new Square[8][8];
 
         // Initialize first rank of Black's side
-        board[0][7] = new Square(context, new Rook(BLACK), BLACK);
-        board[7][7] = new Square(context, new Rook(BLACK), WHITE);
-        board[1][7] = new Square(context, new Knight(BLACK), WHITE);
-        board[6][7] = new Square(context, new Knight(BLACK), BLACK);
-        board[2][7] = new Square(context, new Bishop(BLACK), BLACK);
-        board[5][7] = new Square(context, new Bishop(BLACK), WHITE);
-        board[3][7] = new Square(context, new Queen(BLACK), WHITE);
-        board[4][7] = new Square(context, new King(BLACK), BLACK);
+        board[0][7] = new Square(context, new Rook(BLACK), WHITE);
+        board[7][7] = new Square(context, new Rook(BLACK), BLACK);
+        board[1][7] = new Square(context, new Knight(BLACK), BLACK);
+        board[6][7] = new Square(context, new Knight(BLACK), WHITE);
+        board[2][7] = new Square(context, new Bishop(BLACK), WHITE);
+        board[5][7] = new Square(context, new Bishop(BLACK), BLACK);
+        board[3][7] = new Square(context, new Queen(BLACK), BLACK);
+        board[4][7] = new Square(context, new King(BLACK), WHITE);
 
         // Initialize first rank of White's side
         board[0][0] = new Square(context, new Rook(WHITE), BLACK);
@@ -58,18 +57,18 @@ public class BoardGridView extends GridView {
         rank = 6;
         for (file = 0; file < 8; file++) {
             if (file%2 == 0)
-                board[file][rank] = new Square(context, new Pawn(BLACK), WHITE);
-            else
                 board[file][rank] = new Square(context, new Pawn(BLACK), BLACK);
+            else
+                board[file][rank] = new Square(context, new Pawn(BLACK), WHITE);
         }
 
         // Initialize all empty squares
         for (rank = 5; rank >=2; rank--) {
             for (file = 0; file < 8; file++) {
                 if ((file%2 == 0 && rank%2 == 0) || (file%2 != 0 && rank%2 != 0))
-                    board[file][rank] = new Square(context, WHITE);
-                else
                     board[file][rank] = new Square(context, BLACK);
+                else
+                    board[file][rank] = new Square(context, WHITE);
             }
         }
 
@@ -77,9 +76,9 @@ public class BoardGridView extends GridView {
         rank = 1;
         for (file = 0; file < 8; file++) {
             if (file%2 == 0)
-                board[file][rank] = new Square(context, new Pawn(WHITE), BLACK);
-            else
                 board[file][rank] = new Square(context, new Pawn(WHITE), WHITE);
+            else
+                board[file][rank] = new Square(context, new Pawn(WHITE), BLACK);
         }
 
         // Initialize all private booleans
