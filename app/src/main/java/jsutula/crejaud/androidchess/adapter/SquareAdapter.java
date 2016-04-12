@@ -1,16 +1,12 @@
 package jsutula.crejaud.androidchess.adapter;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.model.Square;
 
 public class SquareAdapter extends BaseAdapter {

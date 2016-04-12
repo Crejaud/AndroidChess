@@ -15,13 +15,13 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean isValidMove(Square[][] board) {
+    public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
         return false;
     }
 
     @Override
-    public Square[][] move(Square[][] board) {
-        return new Square[0][];
+    public void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
+
     }
 
     @Override

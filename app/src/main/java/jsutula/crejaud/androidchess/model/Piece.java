@@ -41,9 +41,30 @@ public abstract class Piece {
         this.hasMoved = hasMoved;
     }
 
-    public abstract boolean isValidMove(Square[][] board);
+    /**
+     * Check to see if a move is valid
+     * @param initFile - The starting file
+     * @param initRank - The starting rank
+     * @param finalFile - The ending file
+     * @param finalRank - The ending rank
+     * @param board - the chess board
+     * @return true if the move is valid, else false
+     */
+    public abstract boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] board);
 
-    public abstract Square[][] move(Square[][] board);
+    /**
+     * Moves the piece from to the finalFile and finalRank and removes pieces as necessary
+     * @param initFile - The starting file
+     * @param initRank - The starting rank
+     * @param finalFile - The ending file
+     * @param finalRank - The ending rank
+     * @param board - the chess board
+     */
+    public abstract void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board);
 
+    /**
+     * Depending on the piece, return the correct drawable id corresponding to the piece and color
+     * @return the drawable id corresponding to the piece and color oombination
+     */
     public abstract int getDrawable();
 }
