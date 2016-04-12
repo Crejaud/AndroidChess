@@ -7,6 +7,16 @@ import android.view.View;
 
 import jsutula.crejaud.androidchess.R;
 
+
+/**
+ * Main Activity for Chess.
+ * The Home Screen.
+ * Has a button to play a new game of Chess.
+ * Has a button to view the list of recorded games of Chess.
+ *
+ * @author Corentin Rejaud
+ * @author Julia Sutula
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

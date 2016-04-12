@@ -5,6 +5,12 @@ import android.os.Bundle;
 
 import jsutula.crejaud.androidchess.R;
 
+/**
+ * The activity for viewing the list of recorded games of Chess.
+ *
+ * @author Corentin Rejaud
+ * @author Julia Sutula
+ */
 public class RecordedGamesActivity extends AppCompatActivity {
 
     @Override

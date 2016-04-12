@@ -3,14 +3,14 @@ package jsutula.crejaud.androidchess.model;
 import android.content.Context;
 
 /**
- * Board class, which holds the board in a game of chess.
+ * Game class, which holds the board in a game of chess.
  *
  * Essentially holds an instance of a game in chess.
  *
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class Board {
+public class Game {
 
     static final boolean WHITE = true;
     static final boolean BLACK = false;
@@ -26,7 +26,7 @@ public class Board {
         isInCheck,
         isDrawAvailable;
 
-    public Board(Context context) {
+    public Game(Context context) {
         board = new Square[8][8];
 
         // Initialize first rank of Black's side

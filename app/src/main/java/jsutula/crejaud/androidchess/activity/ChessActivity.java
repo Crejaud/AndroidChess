@@ -2,7 +2,6 @@ package jsutula.crejaud.androidchess.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -10,8 +9,15 @@ import android.widget.GridView;
 
 import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.adapter.SquareAdapter;
-import jsutula.crejaud.androidchess.model.Board;
+import jsutula.crejaud.androidchess.model.Game;
 
+/**
+ * The Chess Activity Screen.
+ * The activity for actually playing chess.
+ *
+ * @author Corentin Rejaud
+ * @author Julia Sutula
+ */
 public class ChessActivity extends AppCompatActivity {
 
     GridView chessboardGrid;
@@ -28,7 +34,7 @@ public class ChessActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_chess);
 
-        Board newBoard = new Board(this);
+        Game newBoard = new Game(this);
 
         chessboardGrid = (GridView) findViewById(R.id.chessboardGrid);
 
