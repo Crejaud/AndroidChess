@@ -25,16 +25,14 @@ import jsutula.crejaud.androidchess.model.Square;
 public class SquareDragEventListener implements View.OnDragListener{
 
     private ChessActivity chessActivity;
-    private Game game;
     private Square[][] board;
     private GridView gridView;
     private Context context;
     private int barHeight;
     private int initFile, initRank, finalFile, finalRank;
 
-    public SquareDragEventListener(Game game, GridView gv, int barHeight, Context ctx) {
-        this.game = game;
-        this.board = game.getBoard();
+    public SquareDragEventListener(Square[][] board, GridView gv, int barHeight, Context ctx) {
+        this.board = board;
         this.gridView = gv;
         this.barHeight = barHeight;
         this.context = ctx;
@@ -43,8 +41,6 @@ public class SquareDragEventListener implements View.OnDragListener{
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
-        Piece p;
-        String s;
         int x,y;
 
         switch(event.getAction())

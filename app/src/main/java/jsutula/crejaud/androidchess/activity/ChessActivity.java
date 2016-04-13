@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class ChessActivity extends AppCompatActivity {
     private GridView chessboardGrid;
     private Game game;
     private TextView playerTurnTextView;
+    private Button undoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,11 @@ public class ChessActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chess);
 
         playerTurnTextView = (TextView) findViewById(R.id.playerTurnTextView);
+        undoBtn = (Button) findViewById(R.id.undoBtn);
 
         playerTurnTextView.setText(WHITE_TURN);
+
+        undoBtn.setEnabled(false);
 
         game = new Game(this);
 
@@ -63,6 +68,8 @@ public class ChessActivity extends AppCompatActivity {
      */
     public void undo(View view) {
         game.undo();
+        changePlayerTurnText();
+        undoBtn.setEnabled(false);
     }
 
     /**
@@ -95,6 +102,7 @@ public class ChessActivity extends AppCompatActivity {
         if (game.isValidMove(initFile, initRank, finalFile, finalRank)) {
             game.move(initFile, initRank, finalFile, finalRank);
             changePlayerTurnText();
+            undoBtn.setEnabled(true);
         }
     }
 

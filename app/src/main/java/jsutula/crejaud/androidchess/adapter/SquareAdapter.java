@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import jsutula.crejaud.androidchess.activity.ChessActivity;
 import jsutula.crejaud.androidchess.listener.SquareDragEventListener;
 import jsutula.crejaud.androidchess.model.Game;
 import jsutula.crejaud.androidchess.model.Piece;
@@ -30,9 +32,12 @@ import jsutula.crejaud.androidchess.model.Square;
  */
 public class SquareAdapter extends BaseAdapter {
 
+    private ChessActivity chessActivity;
     private Context context;
     private Square[][] board;
     private Game game;
+    private int itemSelected;
+
     //private int rank, file;
     android.widget.GridView.LayoutParams layoutParams;
 
@@ -40,6 +45,8 @@ public class SquareAdapter extends BaseAdapter {
         this.context = context;
         this.board = game.getBoard();
         this.game = game;
+        itemSelected = -1;
+        chessActivity = (ChessActivity) context;
     }
 
     @Override
@@ -73,15 +80,12 @@ public class SquareAdapter extends BaseAdapter {
     }
 
     @Override
-    public Square getView(final int position, View view, ViewGroup parent) {
+    public Square getView(final int position, View view, final ViewGroup parent) {
         final int file = position % 8;
         final int rank = Math.abs((position - file)/8 - 7);
 
-        GridView gv = (GridView) parent;
-
         final Square img = board[file][rank];
-        img.setTag(file + " " + rank + "");
-        final String msg = "TESTING";
+        img.setTag(file + " " + rank);
 
         img.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -99,7 +103,40 @@ public class SquareAdapter extends BaseAdapter {
 
         int barHeight = ((Activity) context).getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
 
-        board[file][rank].setOnDragListener(new SquareDragEventListener(game, gv, barHeight, context));
+        img.setOnDragListener(new SquareDragEventListener(board, (GridView) parent, barHeight, context));
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemSelected == -1) {
+                    if (((Square) v).hasPiece() && ((Square) v).getPiece().isWhite() == game.isWhitesMove()) {
+                        ((Square) v).setColorFilter(Color.BLUE);
+                        itemSelected = position;
+                    }
+                }
+                else if (itemSelected == position) {
+                    ((Square) v).clearColorFilter();
+                    itemSelected = -1;
+                }
+                else {
+
+                    int initFile, initRank, finalFile, finalRank;
+
+                    initFile = itemSelected % 8;
+                    initRank = Math.abs((itemSelected - initFile)/8 - 7);
+
+                    board[initFile][initRank].clearColorFilter();
+
+                    finalFile = position % 8;
+                    finalRank = Math.abs((position - finalFile)/8 - 7);
+
+                    // we now attempt to move the piece
+                    chessActivity.move(initFile, initRank, finalFile, finalRank);
+
+                    itemSelected = -1;
+                }
+            }
+        });
 
 //        img.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
