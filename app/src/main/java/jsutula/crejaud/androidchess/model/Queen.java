@@ -16,12 +16,17 @@ public class Queen extends LongMovementPiece {
 
     @Override
     public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
+        //check if valid long movement
+        if ((Math.abs(initFile - finalFile) == Math.abs(initRank - finalRank)
+                || ((initFile == finalFile && initRank != finalRank) || (initFile != finalFile && initRank == finalRank)))
+                && !hasPiecesInbetween(initFile, initRank, finalFile, finalRank, board)) {
+            if (board[finalFile][finalRank].getPiece() == null
+                    || board[finalFile][finalRank].getPiece().isWhite() != isWhite()) {
+                return true;
+            }
+        }
+
         return false;
-    }
-
-    @Override
-    public void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
-
     }
 
     @Override

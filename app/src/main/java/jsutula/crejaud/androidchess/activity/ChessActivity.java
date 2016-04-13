@@ -2,10 +2,12 @@ package jsutula.crejaud.androidchess.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.adapter.SquareAdapter;
@@ -20,7 +22,12 @@ import jsutula.crejaud.androidchess.model.Game;
  */
 public class ChessActivity extends AppCompatActivity {
 
-    GridView chessboardGrid;
+    private final String WHITE_TURN = "White's Turn";
+    private final String BLACK_TURN = "Black's Turn";
+
+    private GridView chessboardGrid;
+    private Game game;
+    private TextView playerTurnTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +41,15 @@ public class ChessActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_chess);
 
-        Game newBoard = new Game(this);
+        playerTurnTextView = (TextView) findViewById(R.id.playerTurnTextView);
+
+        playerTurnTextView.setText(WHITE_TURN);
+
+        game = new Game(this);
 
         chessboardGrid = (GridView) findViewById(R.id.chessboardGrid);
 
-        SquareAdapter adapter = new SquareAdapter(this, newBoard.getBoard());
+        SquareAdapter adapter = new SquareAdapter(this, game);
 
         chessboardGrid.setAdapter(adapter);
 
@@ -51,7 +62,7 @@ public class ChessActivity extends AppCompatActivity {
      * @param view - undo button view
      */
     public void undo(View view) {
-
+        game.undo();
     }
 
     /**
@@ -78,5 +89,16 @@ public class ChessActivity extends AppCompatActivity {
      */
     public void draw(View view) {
 
+    }
+
+    public void move(int initFile, int initRank, int finalFile, int finalRank) {
+        if (game.isValidMove(initFile, initRank, finalFile, finalRank)) {
+            game.move(initFile, initRank, finalFile, finalRank);
+            changePlayerTurnText();
+        }
+    }
+
+    public void changePlayerTurnText() {
+        playerTurnTextView.setText(game.isWhitesMove() ? WHITE_TURN : BLACK_TURN);
     }
 }

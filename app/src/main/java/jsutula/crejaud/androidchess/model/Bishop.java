@@ -16,12 +16,15 @@ public class Bishop extends LongMovementPiece {
 
     @Override
     public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
+
+        if (Math.abs(initFile - finalFile) == Math.abs(initRank - finalRank) && !hasPiecesInbetween(initFile, initRank, finalFile, finalRank, board)) {
+            if (board[finalFile][finalRank].getPiece() == null)
+                return true;
+            if (board[finalFile][finalRank].getPiece().isWhite() != board[initFile][initRank].getPiece().isWhite())
+                return true;
+        }
+
         return false;
-    }
-
-    @Override
-    public void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
-
     }
 
     @Override

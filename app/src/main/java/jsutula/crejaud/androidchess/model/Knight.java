@@ -16,12 +16,19 @@ public class Knight extends Piece {
 
     @Override
     public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
-        return false;
-    }
 
-    @Override
-    public void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
-
+        if (Math.abs(initFile - finalFile) == 1 && Math.abs(initRank - finalRank) == 2 && board[finalFile][finalRank].getPiece() == null)
+            return true;
+        else if (Math.abs(initFile - finalFile) == 2 && Math.abs(initRank - finalRank) == 1 && board[finalFile][finalRank].getPiece() == null)
+            return true;
+        else if (Math.abs(initFile - finalFile) == 1 && Math.abs(initRank - finalRank) == 2
+                && board[finalFile][finalRank].getPiece().isWhite() != board[initFile][initRank].getPiece().isWhite())
+            return true;
+        else if (Math.abs(initFile - finalFile) == 2 && Math.abs(initRank - finalRank) == 1
+                && board[finalFile][finalRank].getPiece().isWhite() != board[initFile][initRank].getPiece().isWhite())
+            return true;
+        else
+            return false;
     }
 
     @Override

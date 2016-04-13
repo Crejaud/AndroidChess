@@ -1,8 +1,11 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -81,10 +84,10 @@ public class Square extends ImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (occupyingPiece != null)
-            Toast.makeText(getContext(), "This is: " + occupyingPiece + ", color: " + occupyingPiece.isWhite(), Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(getContext(), "This is: empty", Toast.LENGTH_SHORT).show();
+        //if (occupyingPiece != null)
+        //    Toast.makeText(getContext(), "This is: " + occupyingPiece + ", color: " + occupyingPiece.isWhite(), Toast.LENGTH_SHORT).show();
+        //else
+        //    Toast.makeText(getContext(), "This is: empty", Toast.LENGTH_SHORT).show();
         return super.onTouchEvent(event);
     }
 

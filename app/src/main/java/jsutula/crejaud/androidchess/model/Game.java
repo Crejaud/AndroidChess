@@ -1,6 +1,10 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game class, which holds the board in a game of chess.
@@ -25,6 +29,8 @@ public class Game {
         isBlackInCheck,
         isInCheck,
         isDrawAvailable;
+
+    private List<RecordedMove> recordedMoves;
 
     public Game(Context context) {
         board = new Square[8][8];
@@ -80,6 +86,7 @@ public class Game {
         }
 
         // Initialize all private booleans
+        isWhitesMove = true;
         isDone = false;
         isStalemate = false;
         isResign = false;
@@ -88,10 +95,82 @@ public class Game {
         isBlackInCheck = false;
         isInCheck = false;
         isDrawAvailable = false;
+
+        recordedMoves = new ArrayList<RecordedMove>();
     }
 
     public Square[][] getBoard() {
         return board;
+    }
+
+    public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank) {
+        if (initFile == finalFile && initRank == finalRank) {
+            Log.d("CHECK", "the file and rank are the same.");
+            return false;
+        }
+        if (!board[initFile][initRank].hasPiece()) {
+            Log.d("CHECK", "No init piece");
+            return false;
+        }
+        if (board[initFile][initRank].getPiece().isWhite() != isWhitesMove()) {
+            Log.d("CHECK", "Wrong init color, bud!");
+            return false;
+        }
+
+        return board[initFile][initRank].getPiece().isValidMove(initFile, initRank, finalFile, finalRank, board);
+    }
+
+    public void move(int initFile, int initRank, int finalFile, int finalRank) {
+        RecordedMove recordedMove = board[initFile][initRank].getPiece().move(initFile, initRank, finalFile, finalRank, board);
+
+        recordedMoves.add(recordedMove);
+
+        changePlayer();
+    }
+
+    public void undo() {
+
+        RecordedMove recordedMove = recordedMoves.remove(recordedMoves.size() - 1);
+
+        // move piece back to it's original square
+        board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+                .setPiece(board[recordedMove.getMovingFinalFile()][recordedMove.getMovingFinalRank()].getPiece());
+
+        // remove the duplicate piece
+        board[recordedMove.getMovingFinalFile()][recordedMove.getMovingFinalRank()].setPiece(null);
+
+        // revert piece back to it's previous hasMoved value
+        board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+                .getPiece().setHasMoved(recordedMove.hasPreviouslyMoved());
+
+        // place recovered piece
+        board[recordedMove.getDeletedFile()][recordedMove.getDeletedRank()]
+                .setPiece(recordedMove.getDeletedPiece());
+
+        // check for castling
+        if (recordedMove.getCastledInitFile() != -1) {
+            // revert the rook
+            board[recordedMove.getCastledInitFile()][recordedMove.getCastledinitRank()]
+                    .setPiece(board[recordedMove.getCastledFinalFile()][recordedMove.getCastledFinalRank()].getPiece());
+
+            // remove duplicate piece
+            board[recordedMove.getCastledFinalFile()][recordedMove.getCastledFinalRank()].setPiece(null);
+
+            // revert piece back to a hasMoved value of false
+            board[recordedMove.getCastledInitFile()][recordedMove.getCastledinitRank()].getPiece().setHasMoved(false);
+        }
+
+        // go back to previous player's turn
+        changePlayer();
+
+    }
+
+    public boolean isWhitesMove() {
+        return isWhitesMove;
+    }
+
+    public void changePlayer() {
+        isWhitesMove = !isWhitesMove;
     }
 
 }

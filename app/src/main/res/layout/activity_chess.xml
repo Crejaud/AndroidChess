@@ -7,15 +7,22 @@
     android:weightSum="20"
     tools:context="jsutula.crejaud.androidchess.activity.ChessActivity">
 
-
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chessboardGrid"
         android:numColumns="8"
-        android:layout_weight="18">
+        android:layout_weight="16">
 
     </GridView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/playerTurnTextView"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="2" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -59,8 +59,37 @@ public abstract class Piece {
      * @param finalFile - The ending file
      * @param finalRank - The ending rank
      * @param board - the chess board
+     * @return Pair of the deleted piece and it's integer
      */
-    public abstract void move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board);
+    public RecordedMove move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
+
+        Piece initPiece = board[initFile][initRank].getPiece();
+
+        Piece deadPiece = board[finalFile][finalRank].getPiece();
+
+        RecordedMove recordedMove = new RecordedMove(hasMoved(),
+                initFile, initRank, finalFile, finalRank,
+                deadPiece, finalFile, finalRank);
+
+        board[finalFile][finalRank].setPiece(initPiece);
+        board[initFile][initRank].setPiece(null);
+
+        setHasMoved(true); // set hasMoved to true
+
+        return recordedMove;
+
+    }
+
+    /**
+     * getEnpassant()
+     * @return boolean
+     *
+     * Returns boolean indicating whether this piece can be captured by enpassant
+     */
+    public boolean getEnpassant()
+    {
+        return false;
+    }
 
     /**
      * Depending on the piece, return the correct drawable id corresponding to the piece and color

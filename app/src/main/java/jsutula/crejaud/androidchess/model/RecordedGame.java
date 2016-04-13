@@ -1,7 +1,9 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.support.v4.util.Pair;
+import android.util.SparseArray;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,20 +32,13 @@ import java.util.Map;
  */
 public class RecordedGame {
 
-    private String inputs;
-    private Map<Integer, Pair<Piece, Integer>> pieceGraveyardMap;
+    private List<RecordedMove> recordedMoves;
 
-    public RecordedGame(String inputs, Map<Integer, Pair<Piece, Integer>> pieceGraveyardMap) {
-        this.inputs = inputs;
-        this.pieceGraveyardMap = pieceGraveyardMap;
+    public RecordedGame(String inputs, List<RecordedMove> recordedMoves) {
+        this.recordedMoves = recordedMoves;
     }
 
-    public String getInputs() {
-        return inputs;
+    public List<RecordedMove> getRecordedMoves() {
+        return recordedMoves;
     }
-
-    public Map<Integer,Pair<Piece, Integer>> getPieceGraveyardMap() {
-        return pieceGraveyardMap;
-    }
-
 }
