@@ -75,7 +75,7 @@ public class Pawn extends Piece {
         // If pawn is going diagonal for enpassant
         if (shouldEnpassant(initFile, initRank, finalFile, finalRank, board)) {
             setEnpassant(false);
-            Log.d("piece will enpass", shouldEnpassant(initFile, initRank, finalFile, finalRank, board) + "");
+            //Log.d("piece will enpass", shouldEnpassant(initFile, initRank, finalFile, finalRank, board) + "");
             return true;
         }
         //If pawn is going diagonal for enpassant
@@ -120,12 +120,10 @@ public class Pawn extends Piece {
         board[finalFile][finalRank].setPiece(initPiece);
         board[initFile][initRank].setPiece(null);
 
-        Log.d("piece will enpass", willEnpassant + "");
+        //Log.d("piece will enpass", willEnpassant + "");
 
         //if pawn is going diagonal for enpassant remove piece it is passing
         if (initFile != finalFile && willEnpassant) {
-
-
 
             recordedMove.setDeletedRank(initRank);
 

@@ -39,7 +39,7 @@ public abstract class LongMovementPiece extends Piece {
         if (initRank != finalRank && initFile == finalFile) {
             // movement upwards
             if (initRank < finalRank)
-                for (r = initRank+1; r < finalRank - 1; r++)
+                for (r = initRank+1; r < finalRank; r++)
                     if (board[initFile][r].hasPiece())
                         return true;
             // movement downwards
@@ -65,10 +65,10 @@ public abstract class LongMovementPiece extends Piece {
             // up-left if the fileDif is positive and the rankDif is negative
             if (fileDif > 0 && rankDif < 0) {
                 r = initRank+1;
-                for (f = initFile-1; f > finalRank; f--) {
+                for (f = initFile-1; f > finalFile; f--) {
                     if (board[f][r].hasPiece())
                         return true;
-                    r--;
+                    r++;
                 }
             }
             // down-right if the fileDif is negative and the rankDif is positive

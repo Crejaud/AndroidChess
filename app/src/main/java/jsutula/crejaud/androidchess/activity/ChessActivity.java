@@ -67,8 +67,9 @@ public class ChessActivity extends AppCompatActivity {
      * @param view - undo button view
      */
     public void undo(View view) {
-        game.undo();
+        game.undo(game.getBoard());
         changePlayerTurnText();
+        game.createClone();
         undoBtn.setEnabled(false);
     }
 
@@ -78,7 +79,9 @@ public class ChessActivity extends AppCompatActivity {
      * @param view - ai button view
      */
     public void ai(View view) {
-
+        game.ai();
+        changePlayerTurnText();
+        undoBtn.setEnabled(true);
     }
 
     /**

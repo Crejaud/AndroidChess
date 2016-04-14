@@ -1,6 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
+import android.support.v4.util.Pair;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class Game {
     static final boolean BLACK = false;
 
     private Square[][] board;
+
+    private Square[][] clone;
+
     private boolean isDone,
         isStalemate,
         isResign,
@@ -29,6 +33,8 @@ public class Game {
         isBlackInCheck,
         isInCheck,
         isDrawAvailable;
+
+    Location whiteKingLocation, blackKingLocation;
 
     private List<RecordedMove> recordedMoves;
 
@@ -97,47 +103,142 @@ public class Game {
         isDrawAvailable = false;
 
         recordedMoves = new ArrayList<RecordedMove>();
+
+        whiteKingLocation = new Location(4,0);
+        blackKingLocation = new Location(4,7);
+
+        clone = createClone(board);
     }
 
     public Square[][] getBoard() {
         return board;
     }
 
-    public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank) {
+    /**
+     * Check to see if the move is a valid piece move (from within piece class)
+     * @param initFile
+     * @param initRank
+     * @param finalFile
+     * @param finalRank
+     * @param gameBoard - can send either real board or clone board (for testing valid move)
+     * @return true if it's a valid piece move, else false
+     */
+    public boolean isValidPieceMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] gameBoard) {
         if (initFile == finalFile && initRank == finalRank) {
-            Log.d("CHECK", "the file and rank are the same.");
+            //Log.d("CHECK", "the file and rank are the same.");
             return false;
         }
-        if (!board[initFile][initRank].hasPiece()) {
-            Log.d("CHECK", "No init piece");
+        if (!gameBoard[initFile][initRank].hasPiece()) {
+            //Log.d("CHECK", "No init piece");
             return false;
         }
-        if (board[initFile][initRank].getPiece().isWhite() != isWhitesMove()) {
-            Log.d("CHECK", "Wrong init color, bud!");
+        if (gameBoard[initFile][initRank].getPiece().isWhite() != isWhitesMove()) {
+            //Log.d("CHECK", "Wrong init color, bud!");
             return false;
         }
 
-        return board[initFile][initRank].getPiece().isValidMove(initFile, initRank, finalFile, finalRank, board);
+        return gameBoard[initFile][initRank].getPiece().isValidMove(initFile, initRank, finalFile, finalRank, gameBoard);
     }
 
-    public void move(int initFile, int initRank, int finalFile, int finalRank) {
-        RecordedMove recordedMove = board[initFile][initRank].getPiece().move(initFile, initRank, finalFile, finalRank, board);
+    /**
+     * Check if move is truly valid (both valid piece move and does not bring own king in check)
+     * @param initFile
+     * @param initRank
+     * @param finalFile
+     * @param finalRank
+     * @return true if it is a truly valid move, else false
+     */
+    public boolean isValidMove(int initFile, int initRank, int finalFile, int finalRank) {
+
+        // if it is a valid piece move, then test to see if it brings own king into check
+        if (isValidPieceMove(initFile, initRank, finalFile, finalRank, board)) {
+            pieceMove(initFile, initRank, finalFile, finalRank, clone);
+            // isWhitesMove is now changed. It is now the enemy, so check to see if original king is in check (invert isWhitesMove)
+            boolean kingIsInCheck = isKingInCheck(clone, !isWhitesMove());
+            undo(clone);
+            // undo sets isWhitesMove back to original
+            return !kingIsInCheck;
+        }
+
+        return false;
+    }
+
+    /**
+     * Move the piece, and set isWhitesMove to the other side
+     * @param initFile
+     * @param initRank
+     * @param finalFile
+     * @param finalRank
+     * @param gameBoard
+     */
+    public void pieceMove(int initFile, int initRank, int finalFile, int finalRank, Square[][] gameBoard) {
+        RecordedMove recordedMove = gameBoard[initFile][initRank].getPiece().move(initFile, initRank, finalFile, finalRank, gameBoard);
+
+        //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+        //        .hasPiece() + "");
 
         recordedMoves.add(recordedMove);
+
+        if (gameBoard[finalFile][finalRank].getPiece() instanceof King) {
+            if (gameBoard[finalFile][finalRank].getPiece().isWhite()) {
+                whiteKingLocation.setFile(finalFile);
+                whiteKingLocation.setRank(finalRank);
+            } else {
+                blackKingLocation.setFile(finalFile);
+                blackKingLocation.setRank(finalRank);
+            }
+        }
 
         changePlayer();
     }
 
-    public void undo() {
+    /**
+     * Move the piece, then test for check
+     * @param initFile
+     * @param initRank
+     * @param finalFile
+     * @param finalRank
+     */
+    public void move(int initFile, int initRank, int finalFile, int finalRank) {
+        pieceMove(initFile, initRank, finalFile, finalRank, board);
+
+        createClone();
+
+        //test for check
+        testCheck();
+    }
+
+    public void undo(Square[][] board) {
 
         RecordedMove recordedMove = recordedMoves.remove(recordedMoves.size() - 1);
+
+        //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+        //        .hasPiece() + "");
 
         // move piece back to it's original square
         board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
                 .setPiece(board[recordedMove.getMovingFinalFile()][recordedMove.getMovingFinalRank()].getPiece());
 
+        //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+        //        .hasPiece() + "");
+
+        // if it's a king, change location
+        if (board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()].getPiece() instanceof King) {
+            if (board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()].getPiece().isWhite()) {
+                whiteKingLocation.setFile(recordedMove.getMovingInitFile());
+                whiteKingLocation.setRank(recordedMove.getMovingInitRank());
+            }
+            else {
+                blackKingLocation.setFile(recordedMove.getMovingInitFile());
+                blackKingLocation.setRank(recordedMove.getMovingInitRank());
+            }
+        }
+
         // remove the duplicate piece
         board[recordedMove.getMovingFinalFile()][recordedMove.getMovingFinalRank()].setPiece(null);
+
+        //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+        //        .hasPiece() + "");
 
         // revert piece back to it's previous hasMoved value
         board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
@@ -165,12 +266,151 @@ public class Game {
 
     }
 
+    public List<Pair<Location, Location>> getAllValidMoves() {
+        List<Pair<Location, Location>> allMoves = new ArrayList<Pair<Location, Location>>();
+        Pair<Location, Location> move = null;
+
+        for (int initFile = 0; initFile < 8; initFile++) {
+            for (int initRank = 0; initRank < 8; initRank++) {
+                for (int finalFile = 0; finalFile < 8; finalFile++) {
+                    for (int finalRank = 0; finalRank < 8; finalRank++) {
+                        if (isValidMove(initFile, initRank, finalFile, finalRank)) {
+                            move = new Pair<Location,Location>(new Location(initFile, initRank), new Location(finalFile, finalRank));
+                            allMoves.add(move);
+                        }
+                    }
+                }
+            }
+        }
+
+        return allMoves;
+    }
+
+    /**
+     * Check to see if king is in check.
+     * It's in check if there exists a valid piece move towards the enemy king (isKingWhite)
+     * @param gameBoard
+     * @param isKingWhite
+     * @return
+     */
+    public boolean isKingInCheck(Square[][] gameBoard, boolean isKingWhite) {
+        int kingFile, kingRank;
+        if (isKingWhite) {
+            kingFile = whiteKingLocation.getFile();
+            kingRank = whiteKingLocation.getRank();
+        }
+        else {
+            kingFile = blackKingLocation.getFile();
+            kingRank = blackKingLocation.getRank();
+        }
+
+        for (int initFile = 0; initFile < 8; initFile++) {
+            for (int initRank = 0; initRank < 8; initRank++) {
+                if (isValidPieceMove(initFile, initRank, kingFile, kingRank, gameBoard)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * test to see if
+     */
+    public void testCheck() {
+        // temporarily change
+        Log.d("test for check on", isWhitesMove() ? "white":"black");
+        changePlayer();
+        if (isKingInCheck(board, !isWhitesMove())) {
+            setCheck();
+        }
+        else {
+            unsetCheck();
+        }
+    }
+
+    public void setCheck() {
+        isInCheck = true;
+        Log.d("Check", isWhitesMove() ? "black" : "white" + "is in check!");
+        changePlayer();
+        testForCheckmate();
+    }
+
+    public void testForCheckmate() {
+        List<Pair<Location, Location>> allMoves = getAllValidMoves();
+        Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
+        Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
+        if (allMoves.isEmpty()) {
+            Log.d("Checkmate", isWhitesMove() ? "white" : "black" + "is in checkmate!");
+        }
+    }
+
+    public void testForStalemate() {
+        List<Pair<Location, Location>> allMoves = getAllValidMoves();
+        Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
+        Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
+        if (allMoves.isEmpty()) {
+            Log.d("Stalemate", isWhitesMove() ? "white" : "black" + "is in stalemate!");
+        }
+    }
+
+    public void unsetCheck() {
+        isInCheck = false;
+        changePlayer();
+        testForStalemate();
+    }
+
     public boolean isWhitesMove() {
         return isWhitesMove;
     }
 
     public void changePlayer() {
         isWhitesMove = !isWhitesMove;
+    }
+
+    public void createClone() {
+        clone = createClone(board);
+    }
+
+
+    /**
+     * createClone
+     * @param board
+     * @return a deep clone of board, for checking moves
+     */
+    public Square[][] createClone(Square[][] board) {
+        Square[][] clone = new Square[8][8];
+
+        for (int f = 0; f < 8; f++) {
+            for (int r = 0; r < 8; r++) {
+                try {
+                    clone[f][r] = (Square) board[f][r].clone();
+                } catch (CloneNotSupportedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return clone;
+    }
+
+    public void ai() {
+        List<Pair<Location, Location>> allMoves = getAllValidMoves();
+
+        Log.d("All Legit Moves", allMoves.size() + "");
+
+        if (allMoves.size() == 0)
+            return;
+
+        int randomNum = (int) (Math.random() * allMoves.size());
+
+        Log.d("Random Number", randomNum + "");
+
+        Pair<Location, Location> randomMove = allMoves.get(randomNum);
+        move(randomMove.first.getFile(), randomMove.first.getRank(),
+                randomMove.second.getFile(), randomMove.second.getRank());
     }
 
 }

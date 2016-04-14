@@ -52,16 +52,16 @@ public class SquareDragEventListener implements View.OnDragListener{
 
                 y -= barHeight;
 
-                Log.d("Height of titlebar", barHeight +"");
-                Log.d("START POSITION", x + " " + y);
+                //Log.d("Height of titlebar", barHeight +"");
+                //Log.d("START POSITION", x + " " + y);
 
                 initFile = gridView.pointToPosition(x, y) % 8;
                 initRank = Math.abs((gridView.pointToPosition(x, y) - initFile)/8 - 7);
 
-                Log.d("START POSITION",initFile + " " + initRank);
+                //Log.d("START POSITION",initFile + " " + initRank);
 
                 if (!board[initFile][initRank].hasPiece()) {
-                    Log.d("INVALID", "EMPTY");
+                    //Log.d("INVALID", "EMPTY");
                     return false;
                 }
 
@@ -69,14 +69,14 @@ public class SquareDragEventListener implements View.OnDragListener{
                 break;
 
             case DragEvent.ACTION_DROP:
-                Log.d("TEST", "ACTION_DROP event");
+                //Log.d("TEST", "ACTION_DROP event");
 
                 finalFile = gridView.getPositionForView(v) % 8;
                 finalRank = Math.abs((gridView.getPositionForView(v) - finalFile)/8 - 7);
 
-                Log.d("END POS", gridView.getPositionForView(v) + "");
-                Log.d("START POSITION",initFile + " " + initRank);
-                Log.d("END POSITION",finalFile + " " + finalRank);
+                //Log.d("END POS", gridView.getPositionForView(v) + "");
+                //Log.d("START POSITION",initFile + " " + initRank);
+                //Log.d("END POSITION",finalFile + " " + finalRank);
 
                 if (initFile == finalFile && initRank == finalRank)
                     return true;

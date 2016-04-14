@@ -17,7 +17,7 @@ import jsutula.crejaud.androidchess.R;
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class Square extends ImageView {
+public class Square extends ImageView implements Cloneable {
 
     private Piece occupyingPiece;
     private boolean isWhite;
@@ -102,5 +102,9 @@ public class Square extends ImageView {
     protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh)
     {
         super.onSizeChanged(w, w, oldw, oldh);
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

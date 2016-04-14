@@ -6,7 +6,7 @@ package jsutula.crejaud.androidchess.model;
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
 
     private boolean isWhite;
     private boolean hasMoved;
@@ -106,4 +106,8 @@ public abstract class Piece {
      * @return the drawable id corresponding to the piece and color oombination
      */
     public abstract int getDrawable();
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
