@@ -10,10 +10,12 @@ public abstract class Piece {
 
     private boolean isWhite;
     private boolean hasMoved;
+    private boolean enpassant;
 
     public Piece(boolean isWhite) {
         this.isWhite = isWhite;
         hasMoved = false;
+        enpassant = false;
     }
 
     /**
@@ -67,7 +69,7 @@ public abstract class Piece {
 
         Piece deadPiece = board[finalFile][finalRank].getPiece();
 
-        RecordedMove recordedMove = new RecordedMove(hasMoved(),
+        RecordedMove recordedMove = new RecordedMove(hasMoved(), getEnpassant(),
                 initFile, initRank, finalFile, finalRank,
                 deadPiece, finalFile, finalRank);
 
@@ -88,7 +90,15 @@ public abstract class Piece {
      */
     public boolean getEnpassant()
     {
-        return false;
+        return enpassant;
+    }
+
+    /**
+     * setEnpassant()
+     * @param e - new enpassant value
+     */
+    public void setEnpassant(boolean e) {
+        enpassant = e;
     }
 
     /**

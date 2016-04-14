@@ -10,19 +10,20 @@ public class RecordedMove {
 
     private Piece deletedPiece;
 
-    private boolean hasMoved;
+    private boolean hasMoved, enpassant;
 
     private int movingInitFile, movingInitRank, movingFinalFile, movingFinalRank,
             deletedFile, deletedRank, castledInitFile, castledinitRank,
             castledFinalFile, castledFinalRank;
 
-    public RecordedMove (boolean hasMoved, int mif, int mir, int mff, int mfr, Piece dp, int df, int dr) {
-        this(hasMoved, mif, mir,mff, mfr, dp, df, dr, -1, -1, -1, -1);
+    public RecordedMove (boolean hasMoved, boolean enpassant, int mif, int mir, int mff, int mfr, Piece dp, int df, int dr) {
+        this(hasMoved, enpassant, mif, mir,mff, mfr, dp, df, dr, -1, -1, -1, -1);
     }
 
-    public RecordedMove (boolean hasMoved, int mif, int mir, int mff, int mfr, Piece dp, int df, int dr,
+    public RecordedMove (boolean hasMoved, boolean enpassant, int mif, int mir, int mff, int mfr, Piece dp, int df, int dr,
                          int cif, int cir, int cff, int cfr) {
         this.hasMoved = hasMoved;
+        this.enpassant = enpassant;
         movingInitFile = mif;
         movingInitRank = mir;
         movingFinalFile = mff;

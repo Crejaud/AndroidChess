@@ -49,7 +49,7 @@ public class King extends LongMovementPiece {
 
     @Override
     public RecordedMove move(int initFile, int initRank, int finalFile, int finalRank, Square[][] board) {
-        RecordedMove recordedMove = new RecordedMove(hasMoved(),
+        RecordedMove recordedMove = new RecordedMove(hasMoved(), getEnpassant(),
                 initFile, initRank, finalFile, finalRank,
                 board[finalFile][finalRank].getPiece(), finalFile, finalRank);
 
