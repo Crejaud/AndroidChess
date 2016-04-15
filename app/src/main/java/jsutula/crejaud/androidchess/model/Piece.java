@@ -1,5 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.Context;
+
 /**
  * The abstract class of Chess Pieces
  *
@@ -110,4 +112,5 @@ public abstract class Piece implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
 }

@@ -9,5 +9,27 @@
     <string name="draw_btn">Draw</string>
     <string name="resign_btn">Resign</string>
     <string name="ai_btn">AI</string>
+    <string name="draw_confirm">Draw???</string>
+
+    <string name="check_title">Check!</string>
+    <string name="check_ok_dialog">Ok</string>
+    <string name="checkmate_title">Checkmate!</string>
+    <string name="dialog_save_match_button">Save</string>
+    <string name="dialog_cancel_button">Cancel</string>
+    <string name="dialog_save_match_message">Save this match?</string>
+    <string name="stalemate_title">Stalemate!</string>
+    <string name="dialog_title_hint">Match Title</string>
+    <string name="resign_title">Resign!</string>
+    <string name="draw_title">Draw!</string>
+
+    <string name="promotion_title">Promotion!</string>
+    <string name="promotion_message">Which promotion would you like to choose?</string>
+    <string-array name="promotion_array">
+        <item>Queen</item>
+        <item>Knight</item>
+        <item>Rook</item>
+        <item>Bishop</item>
+    </string-array>
+
 
 </resources>

@@ -3,6 +3,7 @@ package jsutula.crejaud.androidchess.model;
 import android.support.v4.util.Pair;
 import android.util.SparseArray;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,12 @@ import java.util.Map;
 public class RecordedGame {
 
     private List<RecordedMove> recordedMoves;
+    private String title;
+    private Calendar date;
 
-    public RecordedGame(String inputs, List<RecordedMove> recordedMoves) {
+    public RecordedGame(String title, Calendar date, List<RecordedMove> recordedMoves) {
+        this.title = title;
+        this.date = date;
         this.recordedMoves = recordedMoves;
     }
 

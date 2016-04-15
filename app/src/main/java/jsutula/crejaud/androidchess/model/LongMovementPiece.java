@@ -1,5 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.Context;
+
 /**
  * Abstract class LongMovementPiece that extends Piece.
  * 1 new method to calculate whether there's pieces inbetween certain points on the board

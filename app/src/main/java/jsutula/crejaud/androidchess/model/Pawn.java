@@ -1,5 +1,8 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import jsutula.crejaud.androidchess.R;
@@ -149,12 +152,6 @@ public class Pawn extends Piece {
                 board[initFile - 1][initRank].setPiece(null);
             }
         }
-
-        // check for promotion
-//        if (isWhite && finalRank == 7)
-//            promotion(input, finalFile, finalRank, board, "white");
-//        if (!isWhite && finalRank == 0)
-//            promotion(input, finalFile, finalRank, board, "black");
 
         setHasMoved(true); // set hasMoved to true
 

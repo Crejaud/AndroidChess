@@ -1,11 +1,15 @@
 package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jsutula.crejaud.androidchess.R;
 
 /**
  * Game class, which holds the board in a game of chess.
@@ -26,6 +30,7 @@ public class Game {
 
     private boolean isDone,
         isStalemate,
+        isCheckmate,
         isResign,
         isWhiteWinner,
         isWhitesMove,
@@ -34,12 +39,16 @@ public class Game {
         isInCheck,
         isDrawAvailable;
 
-    Location whiteKingLocation, blackKingLocation;
+    private Location whiteKingLocation, blackKingLocation;
 
     private List<RecordedMove> recordedMoves;
 
+    private Context context;
+
     public Game(Context context) {
         board = new Square[8][8];
+
+        this.context = context;
 
         // Initialize first rank of Black's side
         board[0][7] = new Square(context, new Rook(BLACK), WHITE);
@@ -95,6 +104,7 @@ public class Game {
         isWhitesMove = true;
         isDone = false;
         isStalemate = false;
+        isCheckmate = false;
         isResign = false;
         isWhiteWinner = false;
         isWhiteInCheck = false;
@@ -189,6 +199,16 @@ public class Game {
             }
         }
 
+        if (gameBoard[finalFile][finalRank].getPiece() instanceof Pawn) {
+            // check for promotion
+            if (isWhitesMove() && finalRank == 7) {
+                promotion(initFile, initRank, finalFile, finalRank, gameBoard, recordedMove);
+            }
+            if (!isWhitesMove() && finalRank == 0) {
+                promotion(initFile, initRank, finalFile, finalRank, gameBoard, recordedMove);
+            }
+        }
+
         changePlayer();
     }
 
@@ -206,6 +226,10 @@ public class Game {
 
         //test for check
         testCheck();
+
+        recordedMoves.get(recordedMoves.size() - 1).setInCheck(isInCheck);
+        recordedMoves.get(recordedMoves.size() - 1).setInCheckmate(isCheckmate);
+        recordedMoves.get(recordedMoves.size() - 1).setInStalemate(isStalemate);
     }
 
     public void undo(Square[][] board) {
@@ -214,6 +238,10 @@ public class Game {
 
         //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
         //        .hasPiece() + "");
+
+        if (recordedMove.isPromotion())
+            board[recordedMove.getMovingFinalFile()][recordedMove.getMovingFinalRank()]
+                    .setPiece(recordedMove.getDeletedPiece());
 
         // move piece back to it's original square
         board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
@@ -240,13 +268,16 @@ public class Game {
         //Log.d("TEST", board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
         //        .hasPiece() + "");
 
-        // revert piece back to it's previous hasMoved value
-        board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
-                .getPiece().setHasMoved(recordedMove.hasPreviouslyMoved());
+        if (!recordedMove.isPromotion()) {
 
-        // place recovered piece
-        board[recordedMove.getDeletedFile()][recordedMove.getDeletedRank()]
-                .setPiece(recordedMove.getDeletedPiece());
+            // revert piece back to it's previous hasMoved value
+            board[recordedMove.getMovingInitFile()][recordedMove.getMovingInitRank()]
+                    .getPiece().setHasMoved(recordedMove.hasPreviouslyMoved());
+
+            // place recovered piece
+            board[recordedMove.getDeletedFile()][recordedMove.getDeletedRank()]
+                    .setPiece(recordedMove.getDeletedPiece());
+        }
 
         // check for castling
         if (recordedMove.getCastledInitFile() != -1) {
@@ -341,16 +372,20 @@ public class Game {
         List<Pair<Location, Location>> allMoves = getAllValidMoves();
         Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
         Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
+        isCheckmate = false;
         if (allMoves.isEmpty()) {
+            isCheckmate = true;
             Log.d("Checkmate", isWhitesMove() ? "white" : "black" + "is in checkmate!");
         }
     }
 
     public void testForStalemate() {
         List<Pair<Location, Location>> allMoves = getAllValidMoves();
-        Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
-        Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
+        Log.d("Testing stalemate on", isWhitesMove() ? "white" : "black");
+        Log.d("Testing for Stalemate", "Legit Moves: " + allMoves.size() + "");
+        isStalemate = false;
         if (allMoves.isEmpty()) {
+            isStalemate = true;
             Log.d("Stalemate", isWhitesMove() ? "white" : "black" + "is in stalemate!");
         }
     }
@@ -411,6 +446,84 @@ public class Game {
         Pair<Location, Location> randomMove = allMoves.get(randomNum);
         move(randomMove.first.getFile(), randomMove.first.getRank(),
                 randomMove.second.getFile(), randomMove.second.getRank());
+    }
+
+    public boolean isCheck() {
+        return isInCheck;
+    }
+
+    public boolean isCheckmate() {
+        return isCheckmate;
+    }
+
+    public boolean isStalemate() {
+        return isStalemate;
+    }
+
+    public List<RecordedMove> getRecordedMoves() {
+        return recordedMoves;
+    }
+
+    public void promotion(int initFile, int initRank, final int finalFile, final int finalRank, Square[][] gameBoard, final RecordedMove recordedMove) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        final int[] pos = new int[1];
+
+        Piece deletedPawn = gameBoard[finalFile][finalRank].getPiece();
+
+        if (clone.equals(gameBoard)) {
+            gameBoard[finalFile][finalRank].setPiece(new Queen(!isWhitesMove()));
+            gameBoard[finalFile][finalRank].getPiece().setHasMoved(true);
+            recordedMove.setPromotedPiece(gameBoard[finalFile][finalRank].getPiece());
+        }
+        else {
+
+            builder.setTitle(R.string.promotion_title)
+                    //.setMessage(R.string.promotion_message)
+                    .setItems(R.array.promotion_array, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            pos[0] = which;
+                            dialog.dismiss();
+                            promote(finalFile, finalRank, pos, recordedMove);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+
+        }
+
+        recordedMove.setDeletedPiece(deletedPawn);
+        recordedMove.setDeletedFile(initFile);
+        recordedMove.setDeletedRank(initRank);
+        recordedMove.setPromotion(true);
+    }
+
+    public void promote(int f, int r, int[] pos, RecordedMove recordedMove) {
+
+        switch(pos[0]) {
+            case 0:
+                board[f][r].setPiece(new Queen(!isWhitesMove()));
+                board[f][r].getPiece().setHasMoved(true);
+                break;
+            case 1:
+                board[f][r].setPiece(new Knight(!isWhitesMove()));
+                board[f][r].getPiece().setHasMoved(true);
+                break;
+            case 2:
+                board[f][r].setPiece(new Rook(!isWhitesMove()));
+                board[f][r].getPiece().setHasMoved(true);
+                break;
+            case 3:
+                board[f][r].setPiece(new Bishop(!isWhitesMove()));
+                board[f][r].getPiece().setHasMoved(true);
+                break;
+            default:
+                break;
+        }
+
+        recordedMove.setPromotedPiece(board[f][r].getPiece());
+
     }
 
 }

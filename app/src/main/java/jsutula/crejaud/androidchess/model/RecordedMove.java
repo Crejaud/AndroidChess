@@ -8,9 +8,9 @@ package jsutula.crejaud.androidchess.model;
  */
 public class RecordedMove {
 
-    private Piece deletedPiece;
+    private Piece deletedPiece, promotedPiece;
 
-    private boolean hasMoved, enpassant;
+    private boolean hasMoved, enpassant, isInCheck, isInCheckmate, isInStalemate, isResign, isDraw, isPromotion;
 
     private int movingInitFile, movingInitRank, movingFinalFile, movingFinalRank,
             deletedFile, deletedRank, castledInitFile, castledinitRank,
@@ -35,6 +35,21 @@ public class RecordedMove {
         castledinitRank = cir;
         castledFinalFile = cff;
         castledFinalRank = cfr;
+        isInCheck = false;
+        isInCheckmate = false;
+        isInStalemate = false;
+        isResign = false;
+        isDraw = false;
+        isPromotion = false;
+        promotedPiece = null;
+    }
+
+    public Piece getPromotedPiece() {
+        return promotedPiece;
+    }
+
+    public void setPromotedPiece(Piece promotedPiece) {
+        this.promotedPiece = promotedPiece;
     }
 
     public boolean hasPreviouslyMoved() {
@@ -55,6 +70,54 @@ public class RecordedMove {
 
     public void setCastledFinalRank(int castledFinalRank) {
         this.castledFinalRank = castledFinalRank;
+    }
+
+    public boolean isResign() {
+        return isResign;
+    }
+
+    public void setResign(boolean resign) {
+        isResign = resign;
+    }
+
+    public boolean isDraw() {
+        return isDraw;
+    }
+
+    public boolean isPromotion() {
+        return isPromotion;
+    }
+
+    public void setPromotion(boolean promotion) {
+        isPromotion = promotion;
+    }
+
+    public void setDraw(boolean draw) {
+        isDraw = draw;
+    }
+
+    public boolean isInCheck() {
+        return isInCheck;
+    }
+
+    public void setInCheck(boolean inCheck) {
+        isInCheck = inCheck;
+    }
+
+    public boolean isInCheckmate() {
+        return isInCheckmate;
+    }
+
+    public void setInCheckmate(boolean inCheckmate) {
+        isInCheckmate = inCheckmate;
+    }
+
+    public boolean isInStalemate() {
+        return isInStalemate;
+    }
+
+    public void setInStalemate(boolean inStalemate) {
+        isInStalemate = inStalemate;
     }
 
     public void setDeletedPiece(Piece deletedPiece) {

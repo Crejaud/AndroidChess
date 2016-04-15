@@ -1,5 +1,7 @@
 package jsutula.crejaud.androidchess.model;
 
+import android.content.Context;
+
 import jsutula.crejaud.androidchess.R;
 
 /**

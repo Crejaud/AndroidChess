@@ -44,6 +44,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/aiBtn"
             android:text="@string/ai_btn"
             android:onClick="ai"
             android:layout_weight="1"/>
@@ -63,6 +64,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/resignBtn"
             android:text="@string/resign_btn"
             android:onClick="resign"
             android:layout_weight="1"/>
@@ -70,6 +72,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/drawBtn"
             android:text="@string/draw_btn"
             android:onClick="draw"
             android:layout_weight="1"/>
