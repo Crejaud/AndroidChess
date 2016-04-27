@@ -58,6 +58,10 @@ public class ChessActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        if(games == null)
+        {
+            games = new RecordedGamesList();
+        }
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
