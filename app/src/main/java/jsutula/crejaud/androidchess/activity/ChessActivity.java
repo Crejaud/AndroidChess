@@ -14,12 +14,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.adapter.SquareAdapter;
 import jsutula.crejaud.androidchess.model.Game;
 import jsutula.crejaud.androidchess.model.RecordedGame;
+import jsutula.crejaud.androidchess.model.RecordedGamesList;
 
 /**
  * The Chess Activity Screen.
@@ -42,8 +44,20 @@ public class ChessActivity extends AppCompatActivity {
 
     private RecordedGame recordedGame = null;
 
+    RecordedGamesList games = new RecordedGamesList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+      try
+       {
+           games = RecordedGamesList.read(this);
+       }
+       catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -74,6 +88,7 @@ public class ChessActivity extends AppCompatActivity {
         SquareAdapter adapter = new SquareAdapter(this, game);
 
         chessboardGrid.setAdapter(adapter);
+
 
     }
 
@@ -218,12 +233,18 @@ public class ChessActivity extends AppCompatActivity {
                                 Calendar.getInstance(), game.getRecordedMoves());
 
                         if (!recordedGame.getRecordedMoves().isEmpty()) {
-                            recordedGame.getRecordedMoves().get(recordedGame.getRecordedMoves().size()).setResign(isResign);
-                            recordedGame.getRecordedMoves().get(recordedGame.getRecordedMoves().size()).setDraw(isDrawConfirmed);
+                            recordedGame.getRecordedMoves().get(recordedGame.getRecordedMoves().size()-1).setResign(isResign);
+                            recordedGame.getRecordedMoves().get(recordedGame.getRecordedMoves().size()-1).setDraw(isDrawConfirmed);
                         }
 
                         // save this recordedGame to list of recorded games and write.
 
+                           games.addGameToList(recordedGame);
+                        try {
+                            RecordedGamesList.write(getApplicationContext(), games);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         dialog.dismiss();
                     }
                 }

@@ -3,6 +3,7 @@ package jsutula.crejaud.androidchess.model;
 import android.support.v4.util.Pair;
 import android.util.SparseArray;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class RecordedGame {
+public class RecordedGame  implements Serializable {
 
     private List<RecordedMove> recordedMoves;
     private String title;
@@ -43,7 +44,19 @@ public class RecordedGame {
         this.recordedMoves = recordedMoves;
     }
 
+    public String getTitle(){
+        return title;
+    }
+
+    public Calendar getDate(){
+        return date;
+    }
     public List<RecordedMove> getRecordedMoves() {
         return recordedMoves;
     }
+    public String toString() {
+
+        return title + ":\n     " + date.getTime().toString();
+    }
+
 }

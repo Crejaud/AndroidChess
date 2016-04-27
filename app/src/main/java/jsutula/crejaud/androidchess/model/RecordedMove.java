@@ -1,12 +1,14 @@
 package jsutula.crejaud.androidchess.model;
 
+import java.io.Serializable;
+
 /**
  * This class records the move
  *
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public class RecordedMove {
+public class RecordedMove implements Serializable {
 
     private Piece deletedPiece, promotedPiece;
 

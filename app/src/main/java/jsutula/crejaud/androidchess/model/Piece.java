@@ -2,13 +2,15 @@ package jsutula.crejaud.androidchess.model;
 
 import android.content.Context;
 
+import java.io.Serializable;
+
 /**
  * The abstract class of Chess Pieces
  *
  * @author Corentin Rejaud
  * @author Julia Sutula
  */
-public abstract class Piece implements Cloneable {
+public abstract class Piece implements Cloneable, Serializable {
 
     private boolean isWhite;
     private boolean hasMoved;
