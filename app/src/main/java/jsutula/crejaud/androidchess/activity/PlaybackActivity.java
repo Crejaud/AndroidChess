@@ -117,9 +117,12 @@ public class PlaybackActivity extends AppCompatActivity {
     public void showMove(){
 
         current = moves.get(moveIndex);
+        if(current.isPromotion())
+            game.setRecordedGamePromotion(current.getPromotedPiece());
+
         game.move(current.getMovingInitFile(), current.getMovingInitRank(), current.getMovingFinalFile(), current.getMovingFinalRank());
         if(current.isInCheck() || current.isInCheckmate() || current.isInStalemate() || current.isResign() || current.isDraw()){
-            System.out.println("It went where its supposed to");
+           // System.out.println("It went where its supposed to");
             showAlert();
         }
 
@@ -154,7 +157,7 @@ public class PlaybackActivity extends AppCompatActivity {
 
             if (current.isInCheckmate())
                 title = getResources().getString(R.string.checkmate_title) + " " + (!game.isWhitesMove() ? "White" : "Black") + " wins!";
-            else if (game.isStalemate())
+            else if (current.isInStalemate())
                 title = getResources().getString(R.string.stalemate_title);
             else if (current.isResign())
                 title = getResources().getString(R.string.resign_title) + " " + (!game.isWhitesMove() ? "White" : "Black") + " wins!";

@@ -37,7 +37,9 @@ public class Game {
         isWhiteInCheck,
         isBlackInCheck,
         isInCheck,
-        isDrawAvailable;
+        isDrawAvailable,
+        recordedPromotion;
+        int[] recordedPromotionPos;
 
     private Location whiteKingLocation, blackKingLocation;
 
@@ -111,6 +113,9 @@ public class Game {
         isBlackInCheck = false;
         isInCheck = false;
         isDrawAvailable = false;
+        recordedPromotion = false;
+        recordedPromotionPos = new int[1];
+        recordedPromotionPos[0] = -1;
 
         recordedMoves = new ArrayList<RecordedMove>();
 
@@ -477,19 +482,22 @@ public class Game {
             recordedMove.setPromotedPiece(gameBoard[finalFile][finalRank].getPiece());
         }
         else {
-
-            builder.setTitle(R.string.promotion_title)
-                    //.setMessage(R.string.promotion_message)
-                    .setItems(R.array.promotion_array, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            pos[0] = which;
-                            dialog.dismiss();
-                            promote(finalFile, finalRank, pos, recordedMove);
-                        }
-                    })
-                    .setCancelable(false)
-                    .show();
+            if(recordedPromotion == false) {
+                builder.setTitle(R.string.promotion_title)
+                        //.setMessage(R.string.promotion_message)
+                        .setItems(R.array.promotion_array, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                pos[0] = which;
+                                dialog.dismiss();
+                                promote(finalFile, finalRank, pos, recordedMove);
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
+            else
+                promote(finalFile, finalRank, recordedPromotionPos, recordedMove);
 
         }
 
@@ -503,19 +511,31 @@ public class Game {
 
         switch(pos[0]) {
             case 0:
-                board[f][r].setPiece(new Queen(!isWhitesMove()));
+                if(recordedPromotion)
+                    board[f][r].setPiece(new Queen(isWhitesMove()));
+                else
+                    board[f][r].setPiece(new Queen(!isWhitesMove()));
                 board[f][r].getPiece().setHasMoved(true);
                 break;
             case 1:
-                board[f][r].setPiece(new Knight(!isWhitesMove()));
+                if(recordedPromotion)
+                    board[f][r].setPiece(new Knight(isWhitesMove()));
+                else
+                    board[f][r].setPiece(new Knight(!isWhitesMove()));
                 board[f][r].getPiece().setHasMoved(true);
                 break;
             case 2:
-                board[f][r].setPiece(new Rook(!isWhitesMove()));
+                if(recordedPromotion)
+                    board[f][r].setPiece(new Rook(isWhitesMove()));
+                else
+                    board[f][r].setPiece(new Rook(!isWhitesMove()));
                 board[f][r].getPiece().setHasMoved(true);
                 break;
             case 3:
-                board[f][r].setPiece(new Bishop(!isWhitesMove()));
+                if(recordedPromotion)
+                    board[f][r].setPiece(new Bishop(isWhitesMove()));
+                else
+                    board[f][r].setPiece(new Bishop(!isWhitesMove()));
                 board[f][r].getPiece().setHasMoved(true);
                 break;
             default:
@@ -526,4 +546,25 @@ public class Game {
 
     }
 
+    public void setRecordedGamePromotion(Piece piece) {
+        recordedPromotion = true;
+        if(piece.getClass().equals(Queen.class))
+        {
+            recordedPromotionPos[0] = 0;
+        }
+        else if(piece.getClass().equals(Knight.class))
+        {
+            recordedPromotionPos[0] = 1;
+        }
+        else if(piece.getClass().equals(Rook.class))
+        {
+            recordedPromotionPos[0] = 2;
+        }
+        else if(piece.getClass().equals(Bishop.class))
+        {
+            recordedPromotionPos[0] = 3;
+        }
+
+
+    }
 }
