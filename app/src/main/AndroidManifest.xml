@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".activity.ChessActivity"/>
         <activity android:name=".activity.RecordedGamesActivity"></activity>
+        <activity android:name=".activity.PlaybackActivity"></activity>
     </application>
 
 </manifest>

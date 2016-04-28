@@ -1,13 +1,16 @@
 package jsutula.crejaud.androidchess.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Comparator;
 
 import jsutula.crejaud.androidchess.R;
@@ -23,10 +26,12 @@ import jsutula.crejaud.androidchess.model.RecordedGamesList;
 public class RecordedGamesActivity extends AppCompatActivity {
 
     RecordedGamesList games;
+    ListView listView;
     Comparator<RecordedGame> byDate;
     Comparator<RecordedGame> byTitle;
     ArrayAdapter<RecordedGame> adapter;
-
+    RecordedGame selectedFromList = null;
+    Button playback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,8 @@ public class RecordedGamesActivity extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
+        playback= (Button)findViewById(R.id.button);
+        playback.setEnabled(false);
 
         try {
             games = RecordedGamesList.read(this);
@@ -55,13 +62,16 @@ public class RecordedGamesActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<RecordedGame>(this, android.R.layout.simple_list_item_1, games.getGamesList());
 
 
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 listView.setSelection(position);
                 view.setSelected(true);
+                selectedFromList = (RecordedGame) listView.getItemAtPosition(position);
+                playback.setEnabled(true);
             }
         });
 
@@ -103,6 +113,19 @@ public class RecordedGamesActivity extends AppCompatActivity {
      */
     public void sortByTitle(View view) {
         adapter.sort(byTitle);
+    }
+
+    /**
+     * This method is called when the user clicks the
+     * playback game button in activity_recorded_games.xml.
+     * Go to the playblack game activity.
+     * @param view - playback game button view
+     */
+    public void playbackGame(View view) {
+        Intent i = new Intent(this, PlaybackActivity.class);
+        i.putExtra("SelectedGame", (Serializable) selectedFromList);
+        System.out.println(selectedFromList.getTitle());
+        startActivity(i);
     }
 
 }

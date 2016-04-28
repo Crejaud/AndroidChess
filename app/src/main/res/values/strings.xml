@@ -21,6 +21,8 @@
     <string name="dialog_title_hint">Match Title</string>
     <string name="resign_title">Resign!</string>
     <string name="draw_title">Draw!</string>
+    <string name="next_btn"> Next Move</string>
+    <string name="prev_btn"> Previous Move</string>
 
     <string name="promotion_title">Promotion!</string>
     <string name="promotion_message">Which promotion would you like to choose?</string>

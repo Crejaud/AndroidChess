@@ -15,7 +15,9 @@
         android:text="Playback Game"
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="playbackGame" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
