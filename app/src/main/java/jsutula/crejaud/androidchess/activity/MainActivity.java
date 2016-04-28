@@ -3,12 +3,9 @@ package jsutula.crejaud.androidchess.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import java.io.File;
-import java.io.IOException;
 
 import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.model.RecordedGamesList;
@@ -31,14 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //File temp = new File(getFilesDir(),"")+File.separator+filename));
-       // games = new RecordedGamesList();
-       // try {
-         //   RecordedGamesList.write(this,games);
-        //} catch (IOException e) {
-          //  e.printStackTrace();
-        //}
 
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");

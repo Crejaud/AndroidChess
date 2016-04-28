@@ -4,31 +4,18 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 
 import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.adapter.PlaybackAdapter;
-import jsutula.crejaud.androidchess.adapter.SquareAdapter;
 import jsutula.crejaud.androidchess.model.Game;
-import jsutula.crejaud.androidchess.model.RecordedGame;
-import jsutula.crejaud.androidchess.model.RecordedGamesList;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
-import jsutula.crejaud.androidchess.R;
 import jsutula.crejaud.androidchess.model.RecordedGame;
 import jsutula.crejaud.androidchess.model.RecordedMove;
 
@@ -106,7 +93,6 @@ public class PlaybackActivity extends AppCompatActivity {
     public void previous(View view) {
        game.undo(game.getBoard());
         moveIndex--;
-       // showMove();
         changePlayerTurnText();
         if(moveIndex < 0) prevBtn.setEnabled(false);
         if(moveIndex < moves.size()-1) nextBtn.setEnabled(true);
@@ -117,19 +103,17 @@ public class PlaybackActivity extends AppCompatActivity {
      * @param view - next button view
      */
     public void next(View view) {
-      //  game.ai();
+
         moveIndex++;
         showMove();
         changePlayerTurnText();
         prevBtn.setEnabled(true);
         if(moveIndex+1 >=moves.size())nextBtn.setEnabled(false);
-
-        //resetDraw();
-
-        //if (game.isCheck() || game.isCheckmate() || game.isStalemate())
-       //     showAlert();
     }
 
+    /**showMove
+     * Moves the pieces in proper location to show move of current RecordedMove
+     */
     public void showMove(){
 
         current = moves.get(moveIndex);

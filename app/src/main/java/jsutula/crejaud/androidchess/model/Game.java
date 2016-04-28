@@ -351,7 +351,7 @@ public class Game {
      */
     public void testCheck() {
         // temporarily change
-        Log.d("test for check on", isWhitesMove() ? "white":"black");
+       // Log.d("test for check on", isWhitesMove() ? "white":"black");
         changePlayer();
         if (isKingInCheck(board, !isWhitesMove())) {
             setCheck();
@@ -363,30 +363,30 @@ public class Game {
 
     public void setCheck() {
         isInCheck = true;
-        Log.d("Check", isWhitesMove() ? "black" : "white" + "is in check!");
+      //  Log.d("Check", isWhitesMove() ? "black" : "white" + "is in check!");
         changePlayer();
         testForCheckmate();
     }
 
     public void testForCheckmate() {
         List<Pair<Location, Location>> allMoves = getAllValidMoves();
-        Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
-        Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
+        //Log.d("Testing checkmate on", isWhitesMove() ? "white" : "black");
+       // Log.d("Testing for Checkmate", "Legit Moves: " + allMoves.size() + "");
         isCheckmate = false;
         if (allMoves.isEmpty()) {
             isCheckmate = true;
-            Log.d("Checkmate", isWhitesMove() ? "white" : "black" + "is in checkmate!");
+         //   Log.d("Checkmate", isWhitesMove() ? "white" : "black" + "is in checkmate!");
         }
     }
 
     public void testForStalemate() {
         List<Pair<Location, Location>> allMoves = getAllValidMoves();
-        Log.d("Testing stalemate on", isWhitesMove() ? "white" : "black");
-        Log.d("Testing for Stalemate", "Legit Moves: " + allMoves.size() + "");
+      //  Log.d("Testing stalemate on", isWhitesMove() ? "white" : "black");
+        //Log.d("Testing for Stalemate", "Legit Moves: " + allMoves.size() + "");
         isStalemate = false;
         if (allMoves.isEmpty()) {
             isStalemate = true;
-            Log.d("Stalemate", isWhitesMove() ? "white" : "black" + "is in stalemate!");
+          //  Log.d("Stalemate", isWhitesMove() ? "white" : "black" + "is in stalemate!");
         }
     }
 
@@ -434,14 +434,14 @@ public class Game {
     public void ai() {
         List<Pair<Location, Location>> allMoves = getAllValidMoves();
 
-        Log.d("All Legit Moves", allMoves.size() + "");
+        //Log.d("All Legit Moves", allMoves.size() + "");
 
         if (allMoves.size() == 0)
             return;
 
         int randomNum = (int) (Math.random() * allMoves.size());
 
-        Log.d("Random Number", randomNum + "");
+       // Log.d("Random Number", randomNum + "");
 
         Pair<Location, Location> randomMove = allMoves.get(randomNum);
         move(randomMove.first.getFile(), randomMove.first.getRank(),
