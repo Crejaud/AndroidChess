@@ -84,6 +84,8 @@ public class PlaybackActivity extends AppCompatActivity {
        chessboardGrid.setAdapter(adapter);
 
 
+
+
     }
 
     /**previous
@@ -116,15 +118,18 @@ public class PlaybackActivity extends AppCompatActivity {
      */
     public void showMove(){
 
-        current = moves.get(moveIndex);
-        if(current.isPromotion())
-            game.setRecordedGamePromotion(current.getPromotedPiece());
 
-        game.move(current.getMovingInitFile(), current.getMovingInitRank(), current.getMovingFinalFile(), current.getMovingFinalRank());
-        if(current.isInCheck() || current.isInCheckmate() || current.isInStalemate() || current.isResign() || current.isDraw()){
-           // System.out.println("It went where its supposed to");
-            showAlert();
-        }
+            current = moves.get(moveIndex);
+            if (current.isPromotion())
+                game.setRecordedGamePromotion(current.getPromotedPiece());
+
+            game.move(current.getMovingInitFile(), current.getMovingInitRank(), current.getMovingFinalFile(), current.getMovingFinalRank());
+            if (current.isInCheck() || current.isInCheckmate() || current.isInStalemate() || current.isResign() || current.isDraw()) {
+                // System.out.println("It went where its supposed to");
+                showAlert();
+            }
+
+
 
 
     }

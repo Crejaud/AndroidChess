@@ -22,6 +22,7 @@ import jsutula.crejaud.androidchess.adapter.SquareAdapter;
 import jsutula.crejaud.androidchess.model.Game;
 import jsutula.crejaud.androidchess.model.RecordedGame;
 import jsutula.crejaud.androidchess.model.RecordedGamesList;
+import jsutula.crejaud.androidchess.model.RecordedMove;
 
 /**
  * The Chess Activity Screen.
@@ -131,7 +132,10 @@ public class ChessActivity extends AppCompatActivity {
      */
     public void resign(View view) {
         isResign = true;
-        showAlert();
+        if(game.getRecordedMoves().isEmpty())
+           finish();
+        else
+            showAlert();
     }
 
     /**
@@ -142,7 +146,11 @@ public class ChessActivity extends AppCompatActivity {
     public void draw(View view) {
         if (isDraw) {
             isDrawConfirmed = true;
-            showAlert();
+            if(game.getRecordedMoves().isEmpty())
+                finish();
+            else
+                showAlert();
+
         }
         else {
             isDraw = true;
@@ -220,6 +228,7 @@ public class ChessActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            finish();
                         }
                     })
                     .setCancelable(false);
@@ -250,9 +259,13 @@ public class ChessActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         dialog.dismiss();
+                        finish();
                     }
                 }
             });
+
+
+
 
 
         }

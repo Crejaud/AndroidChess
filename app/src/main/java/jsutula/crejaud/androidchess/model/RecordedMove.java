@@ -46,6 +46,7 @@ public class RecordedMove implements Serializable {
         promotedPiece = null;
     }
 
+
     public Piece getPromotedPiece() {
         return promotedPiece;
     }
