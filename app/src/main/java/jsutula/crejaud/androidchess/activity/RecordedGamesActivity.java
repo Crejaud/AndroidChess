@@ -38,7 +38,7 @@ public class RecordedGamesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recorded_games);
 
         //This code is only to be used to reset the list of games to be empty
-     /* games = new RecordedGamesList();
+    /*  games = new RecordedGamesList();
         try {
             RecordedGamesList.write(this, games);
         } catch (IOException e) {
